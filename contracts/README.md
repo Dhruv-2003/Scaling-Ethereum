@@ -5,6 +5,8 @@ Project will have 2 sets of Contracts
    -- This will be a kind of Router , which then the oracle users can call to get the data
    -- It will define functions , for different type of Oracles , Like Chainlink and UMA
 
+-> A Price Oracle Contract : Contract that stores the Data
+
 2. Chain Side Oracle Contract
    -- Oracle contract on the optimism Chain , or Other Chain , where the Chainlinka and UMA are active.
    -- These functions will be called by another Server Side node , to get the Data on the other chain
