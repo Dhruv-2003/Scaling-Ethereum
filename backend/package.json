@@ -1,5 +1,19 @@
 {
   "dependencies": {
-    "ethers": "^6.1.0"
-  }
+    "dotenv": "^16.0.3",
+    "ethers": "^6.1.0",
+    "nodemon": "^2.0.21"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon nodemon.js"
+  },
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "Listener.js",
+  "devDependencies": {},
+  "keywords": [],
+  "author": "Dhruv-2003",
+  "license": "ISC",
+  "description": ""
 }
