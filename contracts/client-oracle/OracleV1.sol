@@ -1,4 +1,5 @@
-pragma solidity >=0.4.21 <0.6.0;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.14;
 
 contract Oracle {
     Request[] requests; //list of requests made to the contract
