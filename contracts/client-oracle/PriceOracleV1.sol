@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.14;
 
+// Deployed on the new chain
 contract PriceOracleV1 {
     mapping(address => uint) public pricePair;
 
