@@ -9,8 +9,6 @@ contract OOConsumerV2 {
     // Check the address on Optimism Goreli
     OptimisticOracleV2Interface oo;
 
-    uint256 public totalOORequests;
-
     // Store the Req data
     struct Request {
         bytes identifier;
@@ -19,9 +17,21 @@ contract OOConsumerV2 {
         uint256 reward;
         uint livenessTime;
         uint256 requestTime;
+        address requester;
+        address oracle;
     }
 
     mapping(uint => Request) public ooRequests;
+
+    event requestCreated(
+        uint256 requestId,
+        bytes identifier,
+        bytes ancillaryData,
+        uint256 requestTime,
+        address requester
+    );
+
+    event requestSettled(uint256 requestId, uint256 timestamp);
 
     // get the address of the chain we are interacting on
     constructor(address ooContractAddress) {
@@ -38,11 +48,13 @@ contract OOConsumerV2 {
         );
     */
     function requestData(
-        bytes identifier,
-        bytes ancillaryData,
+        uint256 requestId,
+        bytes memory identifier,
+        bytes memory ancillaryData,
         address bondCurrencyAddress,
         uint256 rewardAmount,
-        uint livenessTime
+        uint livenessTime,
+        address requester
     ) public {
         IERC20 bondCurrency = IERC20(bondCurrencyAddress); // Use Görli WETH as the bond currency
 
@@ -64,31 +76,57 @@ contract OOConsumerV2 {
             livenessTime
         );
 
-        ooRequests[totalOORequests] = ooRequests(
+        ooRequests[requestId] = ooRequests(
             identifier,
             ancillaryData,
             bondCurrencyAddress,
             rewardAmount,
-            
-        )
+            livenessTime,
+            requestTime,
+            requester,
+            msg.sender
+        );
+
+        emit requestCreated(
+            requestId,
+            identifier,
+            ancillaryData,
+            requestTime,
+            requester
+        );
     }
 
     // Settle the request once it's gone through the liveness period of 30 seconds. This acts the finalize the voted on price.
     // In a real world use of the Optimistic Oracle this should be longer to give time to disputers to catch bat price proposals.
-    function settleRequest() public {
-        oo.settle(address(this), identifier, requestTime, ancillaryData);
+    function settleRequest(uint requestId) public {
+        Request memory _request = ooRequests[requestId];
+        oo.settle(
+            address(this),
+            _request.identifier,
+            _request.requestTime,
+            _request.ancillaryData
+        );
+
+        emit requestSettled(requestId, block.timestamp);
     }
 
     // Fetch the resolved price from the Optimistic Oracle that was settled.
-    function getSettledData() public view returns (int256) {
+    function getSettledData(uint requestId) public view returns (int256) {
+        Request memory _request = ooRequests[requestId];
         return
             oo
                 .getRequest(
                     address(this),
-                    identifier,
-                    requestTime,
-                    ancillaryData
+                    _request.identifier,
+                    _request.requestTime,
+                    _request.ancillaryData
                 )
                 .resolvedPrice;
     }
+
+    function getRequest(uint requestId) public view returns (Request memory) {
+        return ooRequests[requestId];
+    }
+
+    /// for all other info , get the info directly from the OO contract
 }
