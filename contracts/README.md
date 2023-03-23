@@ -25,6 +25,10 @@ Project will have 2 sets of Contracts
 
 the request Id is same across consumer and Oracle
 
+https://github.com/UMAprotocol/protocol/blob/7a93650a7494eaee83756382a18ecf11314499cf/packages/core/contracts/optimistic-oracle-v2/interfaces/OptimisticOracleV2Interface.sol
+
+We might need to add custom Bond Amount and the currency
+
 ## Optimistic Oracle V3
 
 -> Assert a truth in the OOV3
@@ -38,3 +42,5 @@ the request Id is same across consumer and Oracle
 -> then result is stored back in the OOV3 and this completed the requests
 
 assertId and assertionId are different
+
+https://github.com/UMAprotocol/protocol/blob/7a93650a7494eaee83756382a18ecf11314499cf/packages/core/contracts/optimistic-oracle-v3/interfaces/OptimisticOracleV3Interface.sol

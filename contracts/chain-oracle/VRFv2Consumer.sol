@@ -14,24 +14,31 @@ contract VRFv2DirectFundingConsumer is
     VRFV2WrapperConsumerBase,
     ConfirmedOwner
 {
-    event RequestSent(uint256 requestId, uint32 numWords);
+    event RequestSent(uint256 requestId, uint vrfID, uint32 numWords);
+
     event RequestFulfilled(
         uint256 requestId,
         uint256[] randomWords,
         uint256 payment
     );
 
-    struct RequestStatus {
+    struct VRFRequests {
+        uint256 requestId;
+        uint256 vrfId;
         uint256 paid; // amount paid in link
         bool fulfilled; // whether the request has been successfully fulfilled
         uint256[] randomWords;
+        uint numWords;
     }
-    mapping(uint256 => RequestStatus)
-        public s_requests; /* requestId --> requestStatus */
+
+    // requestId ->  VRFRequests
+    mapping(uint256 => VRFRequests) public s_requests;
+
+    // vrfId -> VRFRequests
+    mapping(uint256 => VRFRequests) public vrf_requests;
 
     // past requests Id.
     uint256[] public requestIds;
-    uint256 public lastRequestId;
 
     // Depends on the number of requested values that you want sent to the
     // fulfillRandomWords() function. Test and adjust
@@ -40,42 +47,51 @@ contract VRFv2DirectFundingConsumer is
     // function.
     uint32 callbackGasLimit = 100000;
 
-    // The default is 3, but you can set this higher.
-    uint16 requestConfirmations = 3;
-
-    // For this example, retrieve 2 random values in one request.
-    // Cannot exceed VRFV2Wrapper.getConfig().maxNumWords.
-    uint32 numWords = 2;
-
     // Address LINK - hardcoded for Sepolia
-    address linkAddress = 0x779877A7B0D9E8603169DdbD7836e478b4624789;
+    // address linkAddress = 0x779877A7B0D9E8603169DdbD7836e478b4624789;
 
     // address WRAPPER - hardcoded for Sepolia
-    address wrapperAddress = 0xab18414CD93297B0d12ac29E63Ca20f515b3DB46;
+    // address wrapperAddress = 0xab18414CD93297B0d12ac29E63Ca20f515b3DB46;
 
-    constructor()
+    constructor(
+        address linkAddress,
+        address wrapperAddress
+    )
         ConfirmedOwner(msg.sender)
         VRFV2WrapperConsumerBase(linkAddress, wrapperAddress)
     {}
 
-    function requestRandomWords()
-        external
-        onlyOwner
-        returns (uint256 requestId)
-    {
+    function requestRandomWords(
+        uint vrfId,
+        uint numWords,
+        uint requestConfirmations
+    ) external onlyOwner returns (uint256 requestId) {
         requestId = requestRandomness(
             callbackGasLimit,
             requestConfirmations,
             numWords
         );
         s_requests[requestId] = RequestStatus({
+            requestId: requestId,
+            vrfId: vrfId,
             paid: VRF_V2_WRAPPER.calculateRequestPrice(callbackGasLimit),
             randomWords: new uint256[](0),
-            fulfilled: false
+            fulfilled: false,
+            numWords: numWords
         });
+
+        vrf_requests[vrfId] = RequestStatus({
+            requestId: requestId,
+            vrfId: vrfId,
+            paid: VRF_V2_WRAPPER.calculateRequestPrice(callbackGasLimit),
+            randomWords: new uint256[](0),
+            fulfilled: false,
+            numWords: numWords
+        });
+
         requestIds.push(requestId);
         lastRequestId = requestId;
-        emit RequestSent(requestId, numWords);
+        emit RequestSent(requestId, vrfId, numWords);
         return requestId;
     }
 
@@ -86,6 +102,12 @@ contract VRFv2DirectFundingConsumer is
         require(s_requests[_requestId].paid > 0, "request not found");
         s_requests[_requestId].fulfilled = true;
         s_requests[_requestId].randomWords = _randomWords;
+
+        uint vrfId = s_requests[_requestId].vrfId;
+
+        vrf_requests[vrfId].fulfilled = true;
+        vrf_requests[vrfId].randomWords = _randomWords;
+
         emit RequestFulfilled(
             _requestId,
             _randomWords,
@@ -103,6 +125,12 @@ contract VRFv2DirectFundingConsumer is
         require(s_requests[_requestId].paid > 0, "request not found");
         RequestStatus memory request = s_requests[_requestId];
         return (request.paid, request.fulfilled, request.randomWords);
+    }
+
+    function getVRFStatus(
+        uint _vrfId
+    ) public view returns (VRFRequests memory) {
+        return vrf_requests[_vrfId];
     }
 
     /**
