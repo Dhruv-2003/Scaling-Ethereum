@@ -3,6 +3,10 @@ pragma solidity ^0.8.14;
 
 import "https://github.com/UMAprotocol/protocol/blob/7a93650a7494eaee83756382a18ecf11314499cf/packages/core/contracts/optimistic-oracle-v2/interfaces/OptimisticOracleV2Interface.sol";
 
+// ***************************************
+// *    Minimum Viable OOV2 Consumer *
+// ***************************************
+
 // get the Contract Address from the info : https://docs.uma.xyz/resources/network-addresses
 contract OOConsumerV2 {
     // Create an Optimistic oracle instance at the deployed address on Görli.
