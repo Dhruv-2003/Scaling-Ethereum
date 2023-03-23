@@ -3,7 +3,7 @@ pragma solidity ^0.8.14;
 
 /// Maybe we can add extra data ,like proposed Result , settled Result
 contract OptimisticOracleV2 {
-    uint256 public totalOORequests;
+    uint256 public totalOORequests = 1;
 
     enum Status {
         Requested,
