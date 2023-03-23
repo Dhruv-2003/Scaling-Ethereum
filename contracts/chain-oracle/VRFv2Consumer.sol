@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
-// An example of a consumer contract that directly pays for each request.
-pragma solidity ^0.8.7;
+pragma solidity ^0.8.14;
 
 import "@chainlink/contracts/src/v0.8/ConfirmedOwner.sol";
 import "@chainlink/contracts/src/v0.8/VRFV2WrapperConsumerBase.sol";
@@ -14,9 +13,15 @@ contract VRFv2DirectFundingConsumer is
     VRFV2WrapperConsumerBase,
     ConfirmedOwner
 {
-    event RequestSent(uint256 requestId, uint vrfID, uint32 numWords);
+    event RequestSent(
+        uint256 requestId,
+        uint vrfID,
+        uint32 numWords,
+        uint paid
+    );
 
     event RequestFulfilled(
+        uint256 vrfId,
         uint256 requestId,
         uint256[] randomWords,
         uint256 payment
@@ -79,11 +84,14 @@ contract VRFv2DirectFundingConsumer is
             fulfilled: false,
             numWords: numWords
         });
+        uint paidAmount = VRF_V2_WRAPPER.calculateRequestPrice(
+            callbackGasLimit
+        );
 
         vrf_requests[vrfId] = RequestStatus({
             requestId: requestId,
             vrfId: vrfId,
-            paid: VRF_V2_WRAPPER.calculateRequestPrice(callbackGasLimit),
+            paid: paidAmount,
             randomWords: new uint256[](0),
             fulfilled: false,
             numWords: numWords
@@ -91,7 +99,7 @@ contract VRFv2DirectFundingConsumer is
 
         requestIds.push(requestId);
         lastRequestId = requestId;
-        emit RequestSent(requestId, vrfId, numWords);
+        emit RequestSent(requestId, vrfId, numWords, paidAmount);
         return requestId;
     }
 
@@ -109,6 +117,7 @@ contract VRFv2DirectFundingConsumer is
         vrf_requests[vrfId].randomWords = _randomWords;
 
         emit RequestFulfilled(
+            vrfId,
             _requestId,
             _randomWords,
             s_requests[_requestId].paid
