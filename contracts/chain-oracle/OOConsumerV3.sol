@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-
 pragma solidity ^0.8.16;
 
 import "https://github.com/UMAprotocol/protocol/blob/7a93650a7494eaee83756382a18ecf11314499cf/packages/core/contracts/optimistic-oracle-v3/interfaces/OptimisticOracleV3Interface.sol";
@@ -12,13 +11,6 @@ contract OOConsumerV3 {
     // Create an Optimistic Oracle V3 instance at the deployed address on Görli.
     OptimisticOracleV3Interface oov3;
 
-    // get the address of the chain we are interacting on
-    constructor(address ooContractAddress) {
-        oov3 = OptimisticOracleV3Interface(ooContractAddress);
-    }
-
-    uint public totalAssertions;
-
     struct AssertionRequest {
         bytes32 assertionId;
         bytes assertedClaim;
@@ -26,12 +18,21 @@ contract OOConsumerV3 {
         address oracle;
     }
 
-    mapping(uint => AssertionRequest) public assertionRequests;
+    event truthAsserted(
+        uint assertId,
+        bytes assertionID,
+        bytes assertedClaim,
+        uint256 timestamp
+    );
+
+    // get the address of the chain we are interacting on
+    constructor(address ooContractAddress) {
+        oov3 = OptimisticOracleV3Interface(ooContractAddress);
+    }
 
     // Asserted claim. This is some truth statement about the world and can be verified by the network of disputers.
     // bytes public assertedClaim =
     //     bytes("Argentina won the 2022 Fifa world cup in Qatar");
-
     // Assert the truth against the Optimistic Asserter. This uses the assertion with defaults method which defaults
     // all values, such as a) challenge window to 120 seconds (2 mins), b) identifier to ASSERT_TRUTH, c) bond currency
     //  to USDC and c) and default bond size to 0 (which means we dont need to worry about approvals in this example).
@@ -50,6 +51,13 @@ contract OOConsumerV3 {
             assertedClaim,
             requester,
             msg.sender
+        );
+
+        emit truthAsserted(
+            assertId,
+            assertionId,
+            assertedClaim,
+            block.timestamp
         );
     }
 

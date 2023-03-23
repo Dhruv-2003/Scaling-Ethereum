@@ -5,6 +5,12 @@ pragma solidity ^0.8.14;
 contract OptimisticOracleV2 {
     uint256 public totalOORequests;
 
+    enum Status {
+        Requested,
+        SettleRequested,
+        Settled
+    }
+
     // Store the Req data
     struct ooRequest {
         bytes identifier;
@@ -15,6 +21,7 @@ contract OptimisticOracleV2 {
         uint256 requestTime;
         address requester;
         int256 result;
+        Status currentStatus;
     }
 
     mapping(uint => ooRequest) public ooRequests;
@@ -48,7 +55,8 @@ contract OptimisticOracleV2 {
             livenessTime,
             block.timestamp,
             msg.sender,
-            0
+            0,
+            Status.Requested
         );
 
         emit requestCreated(
@@ -62,6 +70,7 @@ contract OptimisticOracleV2 {
 
     // called by the request creator
     function settleRequest(uint requestId) public {
+        ooRequests[requestId].currentStatus = Status.SettleRequested;
         emit settleOORequest(requestId, block.timestamp);
     }
 
@@ -69,6 +78,7 @@ contract OptimisticOracleV2 {
     function setRequestResult(uint requestId, int result) public {
         ooRequest storage _request = ooRequests[requestId];
         _request.result = result;
+        _request.currentStatus = Status.Settled;
         emit resultAdded(requestId, result, block.timestamp);
     }
 }

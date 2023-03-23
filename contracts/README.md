@@ -18,9 +18,23 @@ Project will have 2 sets of Contracts
 -> Store the request , emit events
 -> Oracle Node tracks the request on the chain from the event
 -> Gets the info from the event , add the request to the OOConsumerV2
--> It is then sent to the Optimistic Oracles
+-> It is then sent to the Optimistic UMA Oracles
 -> Then we wait for a proposer and disputor
 -> When it is done, the call Settle Request , and the oracle will note the event to call it back from the consumer
 -> In the same go , after 0.5 sec , oracles call the function to get the final result from the Consumer
 
 the request Id is same across consumer and Oracle
+
+## Optimistic Oracle V3
+
+-> Assert a truth in the OOV3
+-> Store the request , emit the events
+-> Oracle Node tracks the assert event
+-> gets the info and add the request to OOConsumerV3
+-> Then automatically creates one in Optimistic UMA oracle
+-> the assertion Id is returned as an event , which then needs to be stored in OOV3 again
+-> then later , user calls settleAssert , emits event
+-> Oracle tracks and call from OOConsumerV3 to settle and get the Result
+-> then result is stored back in the OOV3 and this completed the requests
+
+assertId and assertionId are different
