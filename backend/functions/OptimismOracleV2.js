@@ -41,6 +41,7 @@ async function consumerRequest(){
         const data = await ConsumerContractWithSigner.requestData(requestId,identifier,ancillaryData,bondCurrencyAddress,rewardAmount,livenessTime,requester);
         await data.wait();
         console.log(data);
+        settleRequestData();
     } catch (error) {
         console.log(error)
     }
@@ -89,9 +90,55 @@ async function RequestData(
   }
 }
 
+//7
+async function getResultData(){
+  try {
+    console.log("Fetching the resolved price from the Optimistic Oracle")
+    const resultdata = await ConsumerContract.getSettledData(requestId);
+    console.log(resultdata);
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+//6 
+async function setRequestResult(){
+  try {
+    console.log("setting requested data")
+    const tx = await OracleContractWithSigner.setRequestResult(requestId,result);
+    await tx.wait();
+    console.log(tx);
+    getResultData();
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+//5
+async function settleRequestConsumer(){
+  try {
+    console.log("settle request function (consumer)")
+    const data = await ConsumerContractWithSigner.settleRequest(requestId);
+    await data.wait();
+    console.log(data);
+    setRequestResult();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+//4
 async function settleRequestData() {
   try {
-  } catch (error) {}
+     // called by the request creator
+    console.log("settle request function by request creator")
+    const settledata = await OracleContractWithSigner.settleRequest(requestId);
+    await settledata.wait();
+    console.log(settledata);
+    settleRequestConsumer();
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 
