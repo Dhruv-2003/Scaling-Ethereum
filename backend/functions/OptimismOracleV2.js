@@ -84,14 +84,11 @@ async function RequestData(
 async function SettleRequestEventListener() {
   try {
     console.log("listening for settle Request event");
-    OracleContract.on(
-      "requestCreated",
-      (requestId, identifier, ancillaryData, timestamp, sender) => {
-        console.log("event emit found");
-        console.log(requestId, identifier, ancillaryData, timestamp, sender);
-        RequestData(requestId, identifier, ancillaryData, timestamp, sender);
-      }
-    );
+    OracleContract.on("settleOORequest", (requestId, timestamp) => {
+      console.log("event emit found");
+      console.log(requestId, timestamp);
+      RequestData(requestId, identifier, ancillaryData, timestamp, sender);
+    });
   } catch (error) {
     console.log(error);
   }
