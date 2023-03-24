@@ -75,7 +75,7 @@ async function RequestData(
     await datarequested.wait();
     console.log("fetched data is:");
     console.log(datarequested);
-    RequestDataEventListener();
+    // RequestDataEventListener();
   } catch (error) {
     console.log(error);
   }
