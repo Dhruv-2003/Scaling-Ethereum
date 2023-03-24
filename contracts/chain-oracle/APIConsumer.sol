@@ -8,11 +8,14 @@ import "@chainlink/contracts/src/v0.8/ConfirmedOwner.sol";
 contract APIConsumer is ChainlinkClient, ConfirmedOwner {
     using Chainlink for Chainlink.Request;
 
-    uint256 public volume;
+    struct APIRequest {
+        Chainlink.Request req;
+        uint requestId;
+        uint result;
+    }
+
     bytes32 private jobId;
     uint256 private fee;
-
-    event RequestVolume(bytes32 indexed requestId, uint256 volume);
 
     /**
      * @notice Initialize the link token and target oracle
@@ -34,27 +37,28 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
         fee = (1 * LINK_DIVISIBILITY) / 10; // 0,1 * 10**18 (Varies by network and job)
     }
 
+    function buildRequest() public returns (Chainlink.Request memory req) {
+        req = buildChainlinkRequest(
+            jobId,
+            address(this),
+            this.fulfill.selector
+        );
+    }
+
     /**
      * Create a Chainlink request to retrieve API response, find the target
      * data, then multiply by 1000000000000000000 (to remove decimal places from data).
      */
     function requestData(
-        string memory apiLink,
-        string memory apiPath
+        Chainlink.Request memory req
     ) public returns (bytes32 requestId) {
-        Chainlink.Request memory req = buildChainlinkRequest(
-            jobId,
-            address(this),
-            this.fulfill.selector
-        );
-
         // Set the URL to perform the GET request on
-        req.add("get", apiLink);
-        req.add("path", apiPath); // Chainlink nodes 1.0.0 and later support this format
+        // req.add("get", apiLink);
+        // req.add("path", apiPath); // Chainlink nodes 1.0.0 and later support this format
 
-        // Multiply the result by 1000000000000000000 to remove decimals
-        int256 timesAmount = 10 ** 18;
-        req.addInt("times", timesAmount);
+        // // Multiply the result by 1000000000000000000 to remove decimals
+        // int256 timesAmount = 10 ** 18;
+        // req.addInt("times", timesAmount);
 
         // Sends the request
         return sendChainlinkRequest(req, fee);
@@ -65,11 +69,8 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
      */
     function fulfill(
         bytes32 _requestId,
-        uint256 _volume
-    ) public recordChainlinkFulfillment(_requestId) {
-        emit RequestVolume(_requestId, _volume);
-        volume = _volume;
-    }
+        uint256 result
+    ) public recordChainlinkFulfillment(_requestId) {}
 
     /**
      * Allow withdraw of Link tokens from the contract
