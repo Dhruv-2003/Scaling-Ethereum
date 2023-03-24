@@ -44,3 +44,16 @@ We might need to add custom Bond Amount and the currency
 assertId and assertionId are different
 
 https://github.com/UMAprotocol/protocol/blob/7a93650a7494eaee83756382a18ecf11314499cf/packages/core/contracts/optimistic-oracle-v3/interfaces/OptimisticOracleV3Interface.sol
+
+## VRF randomness
+
+-> User will call `requestRandomness` , emit event `randomnessRequested` to be tracked , ALL IN ORACLE CONTRACT
+-> Now the deatils from event needs to be stored in CONSUMER , call `requestRandomWords`
+-> Track `RequestSent` event in CONSUMER and set the data from here into ORACLE using `setRequestData`
+-> Track `RequestFulfilled` event in CONSUMER , take the data and the result , call `fulfillRandomness` in the ORACLE
+
+## NEXT TARGETS
+
+-> API fetch Oracle
+-> Weather & Sports Data Feed
+-> Contract Call from L1 , to get Data

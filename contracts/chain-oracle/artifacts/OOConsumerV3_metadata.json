@@ -1,0 +1,313 @@
+{
+	"compiler": {
+		"version": "0.8.16+commit.07a7930e"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "ooContractAddress",
+						"type": "address"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "assertId",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "bytes32",
+						"name": "assertionID",
+						"type": "bytes32"
+					},
+					{
+						"indexed": false,
+						"internalType": "bytes",
+						"name": "assertedClaim",
+						"type": "bytes"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "timestamp",
+						"type": "uint256"
+					}
+				],
+				"name": "truthAsserted",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "assertId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bytes",
+						"name": "assertedClaim",
+						"type": "bytes"
+					},
+					{
+						"internalType": "address",
+						"name": "requester",
+						"type": "address"
+					}
+				],
+				"name": "assertTruth",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "assertionId",
+						"type": "bytes32"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "assertionRequests",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "assertionId",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "bytes",
+						"name": "assertedClaim",
+						"type": "bytes"
+					},
+					{
+						"internalType": "address",
+						"name": "requester",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "oracle",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "assertId",
+						"type": "uint256"
+					}
+				],
+				"name": "getAssertion",
+				"outputs": [
+					{
+						"components": [
+							{
+								"components": [
+									{
+										"internalType": "bool",
+										"name": "arbitrateViaEscalationManager",
+										"type": "bool"
+									},
+									{
+										"internalType": "bool",
+										"name": "discardOracle",
+										"type": "bool"
+									},
+									{
+										"internalType": "bool",
+										"name": "validateDisputers",
+										"type": "bool"
+									},
+									{
+										"internalType": "address",
+										"name": "assertingCaller",
+										"type": "address"
+									},
+									{
+										"internalType": "address",
+										"name": "escalationManager",
+										"type": "address"
+									}
+								],
+								"internalType": "struct OptimisticOracleV3Interface.EscalationManagerSettings",
+								"name": "escalationManagerSettings",
+								"type": "tuple"
+							},
+							{
+								"internalType": "address",
+								"name": "asserter",
+								"type": "address"
+							},
+							{
+								"internalType": "uint64",
+								"name": "assertionTime",
+								"type": "uint64"
+							},
+							{
+								"internalType": "bool",
+								"name": "settled",
+								"type": "bool"
+							},
+							{
+								"internalType": "contract IERC20",
+								"name": "currency",
+								"type": "address"
+							},
+							{
+								"internalType": "uint64",
+								"name": "expirationTime",
+								"type": "uint64"
+							},
+							{
+								"internalType": "bool",
+								"name": "settlementResolution",
+								"type": "bool"
+							},
+							{
+								"internalType": "bytes32",
+								"name": "domainId",
+								"type": "bytes32"
+							},
+							{
+								"internalType": "bytes32",
+								"name": "identifier",
+								"type": "bytes32"
+							},
+							{
+								"internalType": "uint256",
+								"name": "bond",
+								"type": "uint256"
+							},
+							{
+								"internalType": "address",
+								"name": "callbackRecipient",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "disputer",
+								"type": "address"
+							}
+						],
+						"internalType": "struct OptimisticOracleV3Interface.Assertion",
+						"name": "",
+						"type": "tuple"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "assertId",
+						"type": "uint256"
+					}
+				],
+				"name": "getAssertionResult",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "assertId",
+						"type": "uint256"
+					}
+				],
+				"name": "settleAndGetAssertionResult",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"chain-oracle/OOConsumerV3.sol": "OOConsumerV3"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"@openzeppelin/contracts/token/ERC20/IERC20.sol": {
+			"keccak256": "0x9750c6b834f7b43000631af5cc30001c5f547b3ceb3635488f140f60e897ea6b",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://5a7d5b1ef5d8d5889ad2ed89d8619c09383b80b72ab226e0fe7bde1636481e34",
+				"dweb:/ipfs/QmebXWgtEfumQGBdVeM6c71McLixYXQP5Bk6kKXuoY4Bmr"
+			]
+		},
+		"chain-oracle/OOConsumerV3.sol": {
+			"keccak256": "0xdf7e832c3efb2f00cace11491496b678d1bd752c487230fecf482b3573a8532c",
+			"license": "AGPL-3.0-only",
+			"urls": [
+				"bzz-raw://f987c477ceee45ce072fb5d5ee4dc196382ca70c9dff75363baf302ede3e4110",
+				"dweb:/ipfs/QmYQwibS72iTaQWoELdzb6XZVF5y2YrFYKfkGFeLsVtK3x"
+			]
+		},
+		"https://github.com/UMAprotocol/protocol/blob/7a93650a7494eaee83756382a18ecf11314499cf/packages/core/contracts/optimistic-oracle-v3/interfaces/OptimisticOracleV3Interface.sol": {
+			"keccak256": "0x06c16f033cb100a20286b0f9c866a33a227a9e534544d5da6e5e20103d182d00",
+			"license": "AGPL-3.0-only",
+			"urls": [
+				"bzz-raw://a354805eab907d5e9e7910f66ef5c5c5594bb5144a77541d6d30c6cb3cbd6871",
+				"dweb:/ipfs/QmTfUDPJrsuUQ2aPwsbQwTaSvjUzBQFvFxXtmscZFymM4X"
+			]
+		}
+	},
+	"version": 1
+}

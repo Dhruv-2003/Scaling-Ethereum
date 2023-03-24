@@ -44,8 +44,7 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
             jobId,
             address(this),
             this.fulfill.selector
-        );
-        
+        );   
     }
 
     /**
