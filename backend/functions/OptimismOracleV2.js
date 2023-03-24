@@ -34,20 +34,7 @@ const ConsumerContract = new ethers.Contract(
 const OracleContractWithSigner = OracleContract.connect(wallet_Oracle);
 const ConsumerContractWithSigner = ConsumerContract.connect(wallet_Consumer);
 
-//3
-async function consumerRequest(){
-    try {
-        console.log("getting data from requestCreated(OOV2) and adding request to OOConsumerV2");
-        const data = await ConsumerContractWithSigner.requestData(requestId,identifier,ancillaryData,bondCurrencyAddress,rewardAmount,livenessTime,requester);
-        await data.wait();
-        console.log(data);
-        settleRequestData();
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-//2
+//1
 async function RequestDataEventListener() {
   try {
     console.log("listening for requestData event");
@@ -56,30 +43,34 @@ async function RequestDataEventListener() {
       (requestId, identifier, ancillaryData, timestamp, sender) => {
         console.log("event emit found");
         console.log(requestId, identifier, ancillaryData, timestamp, sender);
-      },
-      consumerRequest()
+        RequestData(requestId, identifier, ancillaryData, timestamp, sender);
+      }
     );
   } catch (error) {
     console.log(error);
   }
 }
 
-//1
+//2
 async function RequestData(
+  requestId,
   identifier,
   ancillaryData,
-  bondCurrencyAddress,
-  rewardAmount,
-  livenessTime
+  timestamp,
+  sender
 ) {
   try {
-    console.log("requesting data from OOV2");
-    const datarequested = await OracleContractWithSigner.requestData(
+    console.log(
+      "getting data from requestCreated(OOV2) and adding request to OOConsumerV2"
+    );
+    const data = await ConsumerContractWithSigner.requestData(
+      requestId,
       identifier,
       ancillaryData,
       bondCurrencyAddress,
-      rewardAmount,
-      livenessTime
+      0,
+      30,
+      sender
     );
     await datarequested.wait();
     console.log("fetched data is:");
@@ -90,34 +81,53 @@ async function RequestData(
   }
 }
 
-//7
-async function getResultData(){
+async function SettleRequestEventListener() {
   try {
-    console.log("Fetching the resolved price from the Optimistic Oracle")
-    const resultdata = await ConsumerContract.getSettledData(requestId);
-    console.log(resultdata);
+    console.log("listening for settle Request event");
+    OracleContract.on(
+      "requestCreated",
+      (requestId, identifier, ancillaryData, timestamp, sender) => {
+        console.log("event emit found");
+        console.log(requestId, identifier, ancillaryData, timestamp, sender);
+        RequestData(requestId, identifier, ancillaryData, timestamp, sender);
+      }
+    );
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 }
 
-//6 
-async function setRequestResult(){
+//7
+async function getResultData() {
   try {
-    console.log("setting requested data")
-    const tx = await OracleContractWithSigner.setRequestResult(requestId,result);
+    console.log("Fetching the resolved price from the Optimistic Oracle");
+    const resultdata = await ConsumerContract.getSettledData(requestId);
+    console.log(resultdata);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+//6
+async function setRequestResult() {
+  try {
+    console.log("setting requested data");
+    const tx = await OracleContractWithSigner.setRequestResult(
+      requestId,
+      result
+    );
     await tx.wait();
     console.log(tx);
     getResultData();
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 }
 
 //5
-async function settleRequestConsumer(){
+async function settleRequestConsumer() {
   try {
-    console.log("settle request function (consumer)")
+    console.log("settle request function (consumer)");
     const data = await ConsumerContractWithSigner.settleRequest(requestId);
     await data.wait();
     console.log(data);
@@ -130,16 +140,17 @@ async function settleRequestConsumer(){
 //4
 async function settleRequestData() {
   try {
-     // called by the request creator
-    console.log("settle request function by request creator")
+    // called by the request creator
+    console.log("settle request function by request creator");
     const settledata = await OracleContractWithSigner.settleRequest(requestId);
     await settledata.wait();
     console.log(settledata);
     settleRequestConsumer();
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 }
 
-
-RequestData();
+async function main() {
+  RequestDataEventListener();
+}

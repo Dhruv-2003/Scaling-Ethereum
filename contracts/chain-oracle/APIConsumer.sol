@@ -14,6 +14,8 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
         uint result;
     }
 
+    mapping()
+
     bytes32 private jobId;
     uint256 private fee;
 
@@ -43,6 +45,7 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
             address(this),
             this.fulfill.selector
         );
+        
     }
 
     /**
