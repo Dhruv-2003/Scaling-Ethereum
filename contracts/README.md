@@ -20,7 +20,7 @@ Project will have 2 sets of Contracts
 -> Gets the info from the event , add the request to the OOConsumerV2
 -> It is then sent to the Optimistic UMA Oracles
 -> Then we wait for a proposer and disputor
--> When it is done, the call Settle Request , and the oracle will note the event to call it back from the consumer
+-> When it is done, then call Settle Request , and the oracle will note the event to call it back from the consumer
 -> In the same go , after 0.5 sec , oracles call the function to get the final result from the Consumer
 
 the request Id is same across consumer and Oracle

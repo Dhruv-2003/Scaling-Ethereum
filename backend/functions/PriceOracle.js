@@ -7,7 +7,7 @@ const {
   PriceConsumerContractAddress,
   PriceOracleContractABI,
   PriceOracleContractAddress,
-} = require("./contracts.js");
+} = require("../contracts.js");
 
 const PriceOracleProvider = new ethers.JsonRpcProvider(
   process.env.POLYGON_RPC_URL
