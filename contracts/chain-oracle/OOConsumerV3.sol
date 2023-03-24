@@ -18,9 +18,11 @@ contract OOConsumerV3 {
         address oracle;
     }
 
+    mapping(uint => AssertionRequest) public assertionRequests;
+
     event truthAsserted(
         uint assertId,
-        bytes assertionID,
+        bytes32 assertionID,
         bytes assertedClaim,
         uint256 timestamp
     );

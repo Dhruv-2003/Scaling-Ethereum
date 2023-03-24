@@ -33,7 +33,7 @@ contract VRFv2DirectFundingConsumer is
         uint256 paid; // amount paid in link
         bool fulfilled; // whether the request has been successfully fulfilled
         uint256[] randomWords;
-        uint numWords;
+        uint32 numWords;
     }
 
     // requestId ->  VRFRequests
@@ -44,6 +44,7 @@ contract VRFv2DirectFundingConsumer is
 
     // past requests Id.
     uint256[] public requestIds;
+
 
     // Depends on the number of requested values that you want sent to the
     // fulfillRandomWords() function. Test and adjust
@@ -58,25 +59,31 @@ contract VRFv2DirectFundingConsumer is
     // address WRAPPER - hardcoded for Sepolia
     // address wrapperAddress = 0xab18414CD93297B0d12ac29E63Ca20f515b3DB46;
 
+    address linkAddress;
+
     constructor(
-        address linkAddress,
+        address _linkAddress,
         address wrapperAddress
     )
         ConfirmedOwner(msg.sender)
-        VRFV2WrapperConsumerBase(linkAddress, wrapperAddress)
-    {}
+        VRFV2WrapperConsumerBase(_linkAddress, wrapperAddress)
+    {
+        linkAddress = _linkAddress;
+    }
 
+    /// numWords = 2 
+    /// requestConfirmations = 3
     function requestRandomWords(
         uint vrfId,
-        uint numWords,
-        uint requestConfirmations
+        uint32 numWords,
+        uint16 requestConfirmations
     ) external onlyOwner returns (uint256 requestId) {
         requestId = requestRandomness(
             callbackGasLimit,
             requestConfirmations,
             numWords
         );
-        s_requests[requestId] = RequestStatus({
+        s_requests[requestId] = VRFRequests({
             requestId: requestId,
             vrfId: vrfId,
             paid: VRF_V2_WRAPPER.calculateRequestPrice(callbackGasLimit),
@@ -88,7 +95,7 @@ contract VRFv2DirectFundingConsumer is
             callbackGasLimit
         );
 
-        vrf_requests[vrfId] = RequestStatus({
+        vrf_requests[vrfId] = VRFRequests({
             requestId: requestId,
             vrfId: vrfId,
             paid: paidAmount,
@@ -98,7 +105,7 @@ contract VRFv2DirectFundingConsumer is
         });
 
         requestIds.push(requestId);
-        lastRequestId = requestId;
+
         emit RequestSent(requestId, vrfId, numWords, paidAmount);
         return requestId;
     }
@@ -132,7 +139,7 @@ contract VRFv2DirectFundingConsumer is
         returns (uint256 paid, bool fulfilled, uint256[] memory randomWords)
     {
         require(s_requests[_requestId].paid > 0, "request not found");
-        RequestStatus memory request = s_requests[_requestId];
+        VRFRequests memory request = s_requests[_requestId];
         return (request.paid, request.fulfilled, request.randomWords);
     }
 
