@@ -42,6 +42,7 @@ contract OptimisticOracleV3 {
             false,
             Status.Asserted
         );
+        totalAssertions += 1;
         emit assertTruth(assertId, msg.sender, claim, block.timestamp);
     }
 

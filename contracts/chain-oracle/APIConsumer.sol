@@ -14,9 +14,8 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
         uint result;
     }
 
-    mapping()
+    mapping(uint => APIRequest) public apiRequests;
 
-    bytes32 private jobId;
     uint256 private fee;
 
     /**
@@ -31,20 +30,23 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
     constructor(
         address tokenAddress,
         address oracleAddress,
-        string memory _jobId
+        uint256 _fee
     ) ConfirmedOwner(msg.sender) {
         setChainlinkToken(tokenAddress);
         setChainlinkOracle(oracleAddress);
-        jobId = _jobId;
-        fee = (1 * LINK_DIVISIBILITY) / 10; // 0,1 * 10**18 (Varies by network and job)
+
+        // fee = (1 * LINK_DIVISIBILITY) / 10; // 0,1 * 10**18 (Varies by network and job)
+        fee = _fee;
     }
 
-    function buildRequest() public returns (Chainlink.Request memory req) {
+    function buildRequest(
+        string memory jobId
+    ) public returns (Chainlink.Request memory req) {
         req = buildChainlinkRequest(
             jobId,
             address(this),
             this.fulfill.selector
-        );   
+        );
     }
 
     /**
