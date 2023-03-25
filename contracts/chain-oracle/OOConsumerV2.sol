@@ -15,7 +15,7 @@ contract OOConsumerV2 {
 
     // Store the Req data
     struct Request {
-        bytes identifier;
+        bytes32 identifier;
         bytes ancillaryData;
         address bondCurrencyAddress;
         uint256 reward;
@@ -29,7 +29,7 @@ contract OOConsumerV2 {
 
     event requestCreated(
         uint256 requestId,
-        bytes identifier,
+        bytes32 identifier,
         bytes ancillaryData,
         uint256 requestTime,
         address requester
@@ -53,7 +53,7 @@ contract OOConsumerV2 {
     */
     function requestData(
         uint256 requestId,
-        bytes memory identifier,
+        bytes32 identifier,
         bytes memory ancillaryData,
         address bondCurrencyAddress,
         uint256 rewardAmount,
@@ -80,7 +80,7 @@ contract OOConsumerV2 {
             livenessTime
         );
 
-        ooRequests[requestId] = ooRequests(
+        ooRequests[requestId] = Request(
             identifier,
             ancillaryData,
             bondCurrencyAddress,
