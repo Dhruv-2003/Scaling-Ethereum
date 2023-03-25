@@ -42,7 +42,7 @@ async function requestRandomnessListener() {
       (vrfId, numWords, requestConfirmations) => {
         console.log("event emitted");
         console.log(vrfId, numWords, requestConfirmations);
-        requestRandomness();
+        requestRandomWords(vrfId, numWords, requestConfirmations);
       }
     );
   } catch (error) {
@@ -50,20 +50,20 @@ async function requestRandomnessListener() {
   }
 }
 
-async function requestRandomness(numWords, requestConfirmations) {
-  try {
-    console.log("requesting random");
-    const random = await OracleContractWithSigner.requestRandomness(
-      numWords,
-      requestConfirmations
-    );
-    await random.wait();
-    console.log(random);
-    requestRandomWords();
-  } catch (error) {
-    console.log(error);
-  }
-}
+// async function requestRandomness(numWords, requestConfirmations) {
+//   try {
+//     console.log("requesting random");
+//     const random = await OracleContractWithSigner.requestRandomness(
+//       numWords,
+//       requestConfirmations
+//     );
+//     await random.wait();
+//     console.log(random);
+//     requestRandomWords();
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
 
 async function requestRandomWords(vrfId, numWords, requestConfirmations) {
   try {
@@ -88,7 +88,7 @@ async function requestSentListener() {
       (requestId, vrfId, numWords, paidAmount) => {
         console.log("event emitted");
         console.log(requestId, vrfId, numWords, paidAmount);
-        setRequestData();
+        setRequestData(vrfId, requestId, paidAmount);
       }
     );
   } catch (error) {
@@ -113,12 +113,13 @@ async function setRequestData(vrfId, requestId, paidAmount) {
 
 async function requestFulfilListener() {
   try {
-    console.log("listeneing to request fulfil event")
+    console.log("listeneing to request fulfil event");
     ConsumerContract.on(
       "RequestFulfilled",
-      (vrfId, _requestId, _randomWords, s_requests) => {
-        console.log("event emitted")
-        console.log(vrfId, _requestId, _randomWords, s_requests)
+      (vrfId, _requestId, _randomWords, paidAmount) => {
+        console.log("event emitted");
+        console.log(vrfId, _requestId, _randomWords);
+        fulfillRandomness(vrfId, _randomWords);
       }
     );
   } catch (error) {
@@ -126,15 +127,18 @@ async function requestFulfilListener() {
   }
 }
 
-async function fulfillRandomness(vrfId,_randomWords){
-    try {
-        console.log("calling fulfilrandomness from oracle")
-        const fulran = await OracleContractWithSigner.fulfillRandomness(vrfId,_randomWords);
-        await fulran.wait();
-        console.log(fulran)
-    } catch (error) {
-        console.log(error)
-    }
+async function fulfillRandomness(vrfId, _randomWords) {
+  try {
+    console.log("calling fulfilrandomness from oracle");
+    const fulran = await OracleContractWithSigner.fulfillRandomness(
+      vrfId,
+      _randomWords
+    );
+    await fulran.wait();
+    console.log(fulran);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function main() {
