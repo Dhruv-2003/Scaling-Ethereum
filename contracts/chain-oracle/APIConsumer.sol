@@ -40,6 +40,7 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
     }
 
     function buildRequest(
+        uint apiId,
         string memory jobId
     ) public returns (Chainlink.Request memory req) {
         req = buildChainlinkRequest(
@@ -47,6 +48,7 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
             address(this),
             this.fulfill.selector
         );
+        apiRequests[apiId] = APIRequest(req, 0, 0);
     }
 
     /**
@@ -54,6 +56,7 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
      * data, then multiply by 1000000000000000000 (to remove decimal places from data).
      */
     function requestData(
+        uint apiId,
         Chainlink.Request memory req
     ) public returns (bytes32 requestId) {
         // Set the URL to perform the GET request on
@@ -65,7 +68,7 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
         // req.addInt("times", timesAmount);
 
         // Sends the request
-        return sendChainlinkRequest(req, fee);
+        requestId = sendChainlinkRequest(req, fee);
     }
 
     /**
