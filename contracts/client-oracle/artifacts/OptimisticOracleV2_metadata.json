@@ -16,9 +16,9 @@
 					},
 					{
 						"indexed": false,
-						"internalType": "bytes",
+						"internalType": "bytes32",
 						"name": "identifier",
-						"type": "bytes"
+						"type": "bytes32"
 					},
 					{
 						"indexed": false,
@@ -90,6 +90,91 @@
 				"inputs": [
 					{
 						"internalType": "uint256",
+						"name": "requestId",
+						"type": "uint256"
+					}
+				],
+				"name": "getRequest",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "bytes32",
+								"name": "identifier",
+								"type": "bytes32"
+							},
+							{
+								"internalType": "bytes",
+								"name": "ancillaryData",
+								"type": "bytes"
+							},
+							{
+								"internalType": "address",
+								"name": "bondCurrencyAddress",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "reward",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "livenessTime",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "requestTime",
+								"type": "uint256"
+							},
+							{
+								"internalType": "address",
+								"name": "requester",
+								"type": "address"
+							},
+							{
+								"internalType": "int256",
+								"name": "result",
+								"type": "int256"
+							},
+							{
+								"internalType": "enum OptimisticOracleV2.Status",
+								"name": "currentStatus",
+								"type": "uint8"
+							}
+						],
+						"internalType": "struct OptimisticOracleV2.ooRequest",
+						"name": "",
+						"type": "tuple"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "requestId",
+						"type": "uint256"
+					}
+				],
+				"name": "getRequestResult",
+				"outputs": [
+					{
+						"internalType": "int256",
+						"name": "",
+						"type": "int256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
 						"name": "",
 						"type": "uint256"
 					}
@@ -97,9 +182,9 @@
 				"name": "ooRequests",
 				"outputs": [
 					{
-						"internalType": "bytes",
+						"internalType": "bytes32",
 						"name": "identifier",
-						"type": "bytes"
+						"type": "bytes32"
 					},
 					{
 						"internalType": "bytes",
@@ -148,9 +233,9 @@
 			{
 				"inputs": [
 					{
-						"internalType": "bytes",
+						"internalType": "bytes32",
 						"name": "identifier",
-						"type": "bytes"
+						"type": "bytes32"
 					},
 					{
 						"internalType": "bytes",
@@ -258,11 +343,11 @@
 	},
 	"sources": {
 		"client-oracle/OptimisticOracleV2.sol": {
-			"keccak256": "0xd4af5ccf36bce2d64f41b9906ea2d621e34a980a3b0b82f8efd8803ae3e2dc8a",
+			"keccak256": "0xa45a02c72fa5390eb058e47a5973eea64931b07eb499ced52ac124f79837c385",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://3ff4a9c47e46c6fedc6c2b83a797efd70a4e549a8a01028fcbba0682fbd7ea5e",
-				"dweb:/ipfs/QmRzXDt1xVVuw3tX6Ew8GuLp6UNNNzzQMPUYCmjJhCatn9"
+				"bzz-raw://c1dd07d41ed01983c26027166d7c0188af1ef9832e88732bb29dc20132d02f12",
+				"dweb:/ipfs/QmeUWZUttZjgU62CkKy6XZfXmQdyR9ymBLta9dgjXvjkYy"
 			]
 		}
 	},
