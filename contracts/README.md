@@ -57,7 +57,9 @@ https://github.com/UMAprotocol/protocol/blob/7a93650a7494eaee83756382a18ecf11314
 -> User will call `buildAPIRequest` , to check if there is a build , if not , call `requestBuildReq` from Oracle
 -> Node tracks the `buildRequest` , and calls `buildRequest` in CONSUMER
 -> tracks the `buildRequest` in CONSUMER , set the data into ORACLE with `completeRequestBuild` in ORACLE.
--> Later the user call `requestData` in ORACLE , track
+-> Later the user call `sendRequest` in ORACLE , track event `requestSent` in ORACLE , call `sendRequest` in CONSUMER , this will emit `RequestSent` in CONSUMER , get the request Id and Api id
+-> set these datas into ORACLE with `setRequestData`
+-> track `requestFulfilled` in CONSUMER , store the result and Data in ORACLE with `fulfillRequest` , and completes
 
 ## NEXT TARGETS
 
