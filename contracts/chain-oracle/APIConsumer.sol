@@ -10,11 +10,12 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
 
     struct APIRequest {
         Chainlink.Request req;
-        uint requestId;
+        bytes32 requestId;
         uint result;
     }
 
     mapping(uint => APIRequest) public apiRequests;
+    mapping(bytes32 => uint) public apiIds;
 
     uint256 private fee;
 
@@ -40,6 +41,10 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
     }
 
     event requestBuilt(string jobId, Chainlink.Request req);
+
+    event requestSent(bytes32 requestId, uint apiId);
+
+    event requestFulfilled(uint apiId, uint result);
 
     function buildRequest(
         string memory jobId
@@ -70,6 +75,9 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
 
         // Sends the request
         requestId = sendChainlinkRequest(req, fee);
+        apiRequests[apiId].requestId = requestId;
+        apiIds[requestId] = apiId;
+        emit requestSent(requestId, apiId);
     }
 
     /**
@@ -78,7 +86,11 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
     function fulfill(
         bytes32 _requestId,
         uint256 result
-    ) public recordChainlinkFulfillment(_requestId) {}
+    ) public recordChainlinkFulfillment(_requestId) {
+        uint apiId = apiIds[_requestId];
+        apiRequests[apiId].result = result;
+        emit requestFulfilled(apiId, result);
+    }
 
     /**
      * Allow withdraw of Link tokens from the contract
