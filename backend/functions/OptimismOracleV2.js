@@ -150,4 +150,5 @@ async function settleRequestData() {
 
 async function main() {
   RequestDataEventListener();
+  SettleRequestEventListener();
 }

@@ -1,7 +1,7 @@
 const BridgeWallet = `0xe22eCBbA8fB9C0124eeCb6AfE0bf6A487424989f`;
 // addresses of the deployed contracts
 const OracleContractAddress = `0x73EdC9841B96b08D1E1952466bfC0c3ce2F6fa3F`;  //deployed on sepolia testnet
-const ConsumerContractAddress = ``;    // deployed on mumbai testnet
+const ConsumerContractAddress = `0xC7803Ea35615f9ebCa019276AE5290D9E0616e48`;    // deployed on goerli testnet
 
 const OracleContractABI = [
 	{
