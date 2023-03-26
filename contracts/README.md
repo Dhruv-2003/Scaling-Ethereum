@@ -52,6 +52,13 @@ https://github.com/UMAprotocol/protocol/blob/7a93650a7494eaee83756382a18ecf11314
 -> Track `RequestSent` event in CONSUMER and set the data from here into ORACLE using `setRequestData`
 -> Track `RequestFulfilled` event in CONSUMER , take the data and the result , call `fulfillRandomness` in the ORACLE
 
+## API Oracle
+
+-> User will call `buildAPIRequest` , to check if there is a build , if not , call `requestBuildReq` from Oracle
+-> Node tracks the `buildRequest` , and calls `buildRequest` in CONSUMER
+-> tracks the `buildRequest` in CONSUMER , set the data into ORACLE with `completeRequestBuild` in ORACLE.
+-> Later the user call `requestData` in ORACLE , track
+
 ## NEXT TARGETS
 
 -> API fetch Oracle
