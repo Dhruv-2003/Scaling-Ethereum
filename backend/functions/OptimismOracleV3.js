@@ -149,10 +149,10 @@ async function storingResult(assertId, assertResult) {
   }
 }
 
-async function main() {
+async function OptimismOracleV3() {
   assertTruthEventListner();
   assertedEventListner();
   settleRequestListener();
 }
 
-main();
+module.exports = OptimismOracleV3;

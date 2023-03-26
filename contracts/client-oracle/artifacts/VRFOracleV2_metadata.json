@@ -1,0 +1,220 @@
+{
+	"compiler": {
+		"version": "0.8.16+commit.07a7930e"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "vrfId",
+						"type": "uint256"
+					}
+				],
+				"name": "randomnessFulfilled",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "vrfId",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "numWords",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "requestConfirmations",
+						"type": "uint256"
+					}
+				],
+				"name": "randomnessRequested",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "vrfId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256[]",
+						"name": "_randomWords",
+						"type": "uint256[]"
+					}
+				],
+				"name": "fulfillRandomness",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "vrfId",
+						"type": "uint256"
+					}
+				],
+				"name": "getRandomness",
+				"outputs": [
+					{
+						"internalType": "uint256[]",
+						"name": "",
+						"type": "uint256[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "numWords",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "requestConfirmations",
+						"type": "uint256"
+					}
+				],
+				"name": "requestRandomness",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "vrfId",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "vrfId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "requestId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "paidAmount",
+						"type": "uint256"
+					}
+				],
+				"name": "setRequestData",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "totalVRFRequests",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "vrfRequests",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "requestId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "paid",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "fulfilled",
+						"type": "bool"
+					},
+					{
+						"internalType": "uint256",
+						"name": "numWords",
+						"type": "uint256"
+					},
+					{
+						"internalType": "enum VRFOracleV2.Status",
+						"name": "currentStatus",
+						"type": "uint8"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"client-oracle/VRFOracleV2.sol": "VRFOracleV2"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"client-oracle/VRFOracleV2.sol": {
+			"keccak256": "0x7868364265dd1209ecf06b4ff0230013a56f81f2f74374d41ce7afc5ee680312",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://6c127133adc84fd0b56b0286b4e870239cfe0a735c52a2093a84bfb5e1f8d24e",
+				"dweb:/ipfs/QmaxfoK4mSYgjWtdggYQK3c7jgK8TFdxQDDdp5quHfPFL5"
+			]
+		}
+	},
+	"version": 1
+}

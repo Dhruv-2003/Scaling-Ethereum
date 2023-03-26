@@ -9,10 +9,8 @@ const {
   ConsumerContractAddress,
 } = require("../src/VRFOracleV2/constants.js");
 
-const OracleProvider = new ethers.JsonRpcProvider(process.env.SEPOLIA_RPC_URL);
-const ConsumerProvider = new ethers.JsonRpcProvider(
-  process.env.POLYGON_RPC_URL
-);
+const OracleProvider = new ethers.JsonRpcProvider(process.env.DEST_RPC_URL);
+const ConsumerProvider = new ethers.JsonRpcProvider(process.env.ORIGIN_RPC_URL);
 
 const privatekey = process.env.BRIDGE_PRIVATE_KEY;
 
@@ -141,8 +139,10 @@ async function fulfillRandomness(vrfId, _randomWords) {
   }
 }
 
-async function main() {
+async function VRFOracleV2() {
   requestRandomnessListener();
   requestSentListener();
   requestFulfilListener();
 }
+
+VRFOracleV2();

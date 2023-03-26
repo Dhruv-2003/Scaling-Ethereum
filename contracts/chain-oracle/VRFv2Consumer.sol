@@ -77,7 +77,7 @@ contract VRFv2DirectFundingConsumer is
         uint vrfId,
         uint32 numWords,
         uint16 requestConfirmations
-    ) external onlyOwner returns (uint256 requestId) {
+    ) external returns (uint256 requestId) {
         requestId = requestRandomness(
             callbackGasLimit,
             requestConfirmations,

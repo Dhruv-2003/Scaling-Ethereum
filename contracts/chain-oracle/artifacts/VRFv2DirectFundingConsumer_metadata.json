@@ -479,11 +479,11 @@
 			]
 		},
 		"chain-oracle/VRFv2Consumer.sol": {
-			"keccak256": "0x3a611fc005432a38f0701e57f800f478a765b5a388387d6896502718370efc74",
+			"keccak256": "0x997908e43db2be8ed24b1e3222a0d8218eb1e61d46bd1ecea2be659bbdebb1c4",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://f0f5a2ab9fe1b025ef683d04ce7ae3b4295dd8c98cab918a4e836e1e99e013e1",
-				"dweb:/ipfs/QmUUyC9ckqcVah5BoDFLc4qwDFENvgaxUvPgUeL15Wj7dW"
+				"bzz-raw://07734202e592175cf14c08d66b7da2e50f7e4704c4644baddde1f76d963b79d8",
+				"dweb:/ipfs/QmSjMXfEusS4Y71fov6gAWm5JfDtSZTX6GmWfGir5tmtpG"
 			]
 		}
 	},

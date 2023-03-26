@@ -270,11 +270,11 @@
 	},
 	"sources": {
 		"client-oracle/OptimisticOracleV3.sol": {
-			"keccak256": "0xc52d4effdbec68849b7c316fdb2082dd62c9934bbbda4fbae9567a6480ea1366",
+			"keccak256": "0xa255bc6dd7b4fb4ae6767d06ebc7bee9852c1a5af5b8419885220c710e1e41f9",
 			"license": "AGPL-3.0-only",
 			"urls": [
-				"bzz-raw://28fb1f1d471c4e87479761306c1d64b6ce79143ed9bdb246024bbcbc9624131f",
-				"dweb:/ipfs/QmVUAJw4Mupp7ydJxUpmJVzsbDqLznkbEUStobrnLo2k68"
+				"bzz-raw://25385135dceb9a74bbaf8e725bb68caa997faef0738ab32ca8907e8441fff1d9",
+				"dweb:/ipfs/QmWkvmorJU9ZT59VvBoLSQNTxgSUB7jf4xeSb4s8Gkxwg1"
 			]
 		}
 	},
