@@ -4,7 +4,7 @@ A cross-chain permissionless oracle protocol for smart contracts built on top of
 
 Demo - Video
 
-[![DATUM THUMBNAIL](ttps://img.youtube.com/vi/uTJiElet0VM/0.jpg)](https://youtu.be/uTJiElet0VM)
+[![DATUM THUMBNAIL](https://img.youtube.com/vi/uTJiElet0VM/0.jpg)](https://youtu.be/uTJiElet0VM)
 
 ## 🤷‍♀️ Question Time
 
