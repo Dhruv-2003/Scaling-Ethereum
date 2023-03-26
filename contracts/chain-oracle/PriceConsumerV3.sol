@@ -5,12 +5,6 @@ import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
 /// the Address list can be found for the pair here at : https://docs.chain.link/data-feeds/price-feeds/addresses?network=optimism
 contract PriceConsumerV3 {
-    AggregatorV3Interface internal priceFeed;
-    constructor() {
-        priceFeed = AggregatorV3Interface(
-        );
-    }
-
     /**
      * Returns the latest price.
      */
