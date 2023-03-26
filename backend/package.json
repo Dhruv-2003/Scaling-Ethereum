@@ -6,11 +6,10 @@
   },
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon chainlistener.js"
+    "dev": "nodemon server.js"
   },
   "name": "backend",
   "version": "1.0.0",
-  "main": "Listener.js",
   "devDependencies": {},
   "keywords": [],
   "author": "Dhruv-2003",

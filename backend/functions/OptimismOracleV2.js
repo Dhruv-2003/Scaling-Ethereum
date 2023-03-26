@@ -9,10 +9,8 @@ const {
   ConsumerContractAddress,
 } = require("../src/OptimismOracleV2/constants.js");
 
-const OracleProvider = new ethers.JsonRpcProvider(process.env.SEPOLIA_RPC_URL);
-const ConsumerProvider = new ethers.JsonRpcProvider(
-  process.env.POLYGON_RPC_URL
-);
+const OracleProvider = new ethers.JsonRpcProvider(process.env.DEST_RPC_URL);
+const ConsumerProvider = new ethers.JsonRpcProvider(process.env.ORIGIN_RPC_URL);
 
 const privatekey = process.env.BRIDGE_PRIVATE_KEY;
 
@@ -33,11 +31,12 @@ const ConsumerContract = new ethers.Contract(
 
 const OracleContractWithSigner = OracleContract.connect(wallet_Oracle);
 const ConsumerContractWithSigner = ConsumerContract.connect(wallet_Consumer);
+const bondCurrencyAddress = "0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6";
 
 //1
 async function RequestDataEventListener() {
   try {
-    console.log("listening for requestData event");
+    console.log("listening for requestData event ...");
     OracleContract.on(
       "requestCreated",
       (requestId, identifier, ancillaryData, timestamp, sender) => {
@@ -72,83 +71,87 @@ async function RequestData(
       30,
       sender
     );
-    await datarequested.wait();
+    await data.wait();
     console.log("fetched data is:");
-    console.log(datarequested);
-    // RequestDataEventListener();
+    console.log(data);
   } catch (error) {
     console.log(error);
   }
 }
 
+// 3
 async function SettleRequestEventListener() {
   try {
     console.log("listening for settle Request event");
     OracleContract.on("settleOORequest", (requestId, timestamp) => {
       console.log("event emit found");
       console.log(requestId, timestamp);
-      RequestData(requestId, identifier, ancillaryData, timestamp, sender);
+      settleRequestConsumer(requestId);
     });
   } catch (error) {
     console.log(error);
   }
 }
 
-//7
-async function getResultData() {
+//4
+async function settleRequestConsumer(requestId) {
   try {
-    console.log("Fetching the resolved price from the Optimistic Oracle");
-    const resultdata = await ConsumerContract.getSettledData(requestId);
-    console.log(resultdata);
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-//6
-async function setRequestResult() {
-  try {
-    console.log("setting requested data");
-    const tx = await OracleContractWithSigner.setRequestResult(
-      requestId,
-      result
-    );
-    await tx.wait();
-    console.log(tx);
-    getResultData();
+    console.log("Settling request in OO in CONSUMER ....");
+    const data = await ConsumerContractWithSigner.settleRequest(requestId);
+    await data.wait();
+    console.log(data);
   } catch (error) {
     console.log(error);
   }
 }
 
 //5
-async function settleRequestConsumer() {
+async function RequestSettledEventListener() {
   try {
-    console.log("settle request function (consumer)");
-    const data = await ConsumerContractWithSigner.settleRequest(requestId);
-    await data.wait();
-    console.log(data);
-    setRequestResult();
+    console.log("listening for settle Request event in CONSUMER ...");
+    ConsumerContract.on("requestSettled", (requestId, timestamp) => {
+      console.log("event emit found");
+      console.log(requestId, timestamp);
+      getResultData(requestId);
+    });
   } catch (error) {
     console.log(error);
   }
 }
 
-//4
-async function settleRequestData() {
+//6
+async function getResultData(requestId) {
   try {
-    // called by the request creator
-    console.log("settle request function by request creator");
-    const settledata = await OracleContractWithSigner.settleRequest(requestId);
-    await settledata.wait();
-    console.log(settledata);
-    settleRequestConsumer();
+    console.log(
+      "Fetching the resolved price from the Optimistic Oracle Consumer"
+    );
+    const resultdata = await ConsumerContract.getSettledData(requestId);
+    console.log(resultdata);
+    setRequestResult(requestId, resultdata);
   } catch (error) {
     console.log(error);
   }
 }
 
-async function main() {
+//7
+async function setRequestResult(requestId, result) {
+  try {
+    console.log("Setting requested data in CONSUMER ...");
+    const tx = await OracleContractWithSigner.setRequestResult(
+      requestId,
+      result
+    );
+    await tx.wait();
+    console.log(tx);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function OptimismOracleV2() {
   RequestDataEventListener();
   SettleRequestEventListener();
+  RequestSettledEventListener();
 }
+
+module.exports = OptimismOracleV2;

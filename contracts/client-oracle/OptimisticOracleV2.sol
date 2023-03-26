@@ -59,6 +59,8 @@ contract OptimisticOracleV2 {
             Status.Requested
         );
 
+        totalOORequests +=1;
+
         emit requestCreated(
             requestId,
             identifier,

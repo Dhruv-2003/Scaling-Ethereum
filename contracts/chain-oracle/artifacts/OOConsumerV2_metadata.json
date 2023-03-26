@@ -6,6 +6,17 @@
 	"output": {
 		"abi": [
 			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "ooContractAddress",
+						"type": "address"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
 				"anonymous": false,
 				"inputs": [
 					{
@@ -53,37 +64,12 @@
 					},
 					{
 						"indexed": false,
-						"internalType": "int256",
-						"name": "result",
-						"type": "int256"
-					},
-					{
-						"indexed": false,
 						"internalType": "uint256",
 						"name": "timestamp",
 						"type": "uint256"
 					}
 				],
-				"name": "resultAdded",
-				"type": "event"
-			},
-			{
-				"anonymous": false,
-				"inputs": [
-					{
-						"indexed": false,
-						"internalType": "uint256",
-						"name": "requestId",
-						"type": "uint256"
-					},
-					{
-						"indexed": false,
-						"internalType": "uint256",
-						"name": "timestamp",
-						"type": "uint256"
-					}
-				],
-				"name": "settleOORequest",
+				"name": "requestSettled",
 				"type": "event"
 			},
 			{
@@ -134,17 +120,12 @@
 								"type": "address"
 							},
 							{
-								"internalType": "int256",
-								"name": "result",
-								"type": "int256"
-							},
-							{
-								"internalType": "enum OptimisticOracleV2.Status",
-								"name": "currentStatus",
-								"type": "uint8"
+								"internalType": "address",
+								"name": "oracle",
+								"type": "address"
 							}
 						],
-						"internalType": "struct OptimisticOracleV2.ooRequest",
+						"internalType": "struct OOConsumerV2.Request",
 						"name": "",
 						"type": "tuple"
 					}
@@ -160,7 +141,7 @@
 						"type": "uint256"
 					}
 				],
-				"name": "getRequestResult",
+				"name": "getSettledData",
 				"outputs": [
 					{
 						"internalType": "int256",
@@ -217,14 +198,9 @@
 						"type": "address"
 					},
 					{
-						"internalType": "int256",
-						"name": "result",
-						"type": "int256"
-					},
-					{
-						"internalType": "enum OptimisticOracleV2.Status",
-						"name": "currentStatus",
-						"type": "uint8"
+						"internalType": "address",
+						"name": "oracle",
+						"type": "address"
 					}
 				],
 				"stateMutability": "view",
@@ -232,6 +208,11 @@
 			},
 			{
 				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "requestId",
+						"type": "uint256"
+					},
 					{
 						"internalType": "bytes32",
 						"name": "identifier",
@@ -256,33 +237,14 @@
 						"internalType": "uint256",
 						"name": "livenessTime",
 						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "requester",
+						"type": "address"
 					}
 				],
 				"name": "requestData",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "requestId",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "requestId",
-						"type": "uint256"
-					},
-					{
-						"internalType": "int256",
-						"name": "result",
-						"type": "int256"
-					}
-				],
-				"name": "setRequestResult",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -299,19 +261,6 @@
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "totalOORequests",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
 			}
 		],
 		"devdoc": {
@@ -321,14 +270,17 @@
 		},
 		"userdoc": {
 			"kind": "user",
-			"methods": {},
-			"notice": "Maybe we can add extra data ,like proposed Result , settled Result",
+			"methods": {
+				"requestData(uint256,bytes32,bytes,address,uint256,uint256,address)": {
+					"notice": "bytes identifier = bytes(\"YES_OR_NO_QUERY\") identifier can be found here: https://docs.uma.xyz/resources/approved-price-identifiers  bytes ancillaryData = bytes( \"Q:Did the temperature on the 25th of July 2022 in Manhattan NY exceed 35c? A:1 for yes. 0 for no.\" );"
+				}
+			},
 			"version": 1
 		}
 	},
 	"settings": {
 		"compilationTarget": {
-			"client-oracle/OptimisticOracleV2.sol": "OptimisticOracleV2"
+			"chain-oracle/OOConsumerV2.sol": "OOConsumerV2"
 		},
 		"evmVersion": "london",
 		"libraries": {},
@@ -342,12 +294,36 @@
 		"remappings": []
 	},
 	"sources": {
-		"client-oracle/OptimisticOracleV2.sol": {
-			"keccak256": "0xd2be8aed68eec8a113fbc370b76b14e5fe6c5bf4b840127f6384cbd4e3380869",
+		"@openzeppelin/contracts/token/ERC20/IERC20.sol": {
+			"keccak256": "0x9750c6b834f7b43000631af5cc30001c5f547b3ceb3635488f140f60e897ea6b",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://cb4ad860426822a3d3783a913014c2b6d0cf45a1892539f0363577e76f1568c3",
-				"dweb:/ipfs/QmaKxdbDwK6MaJDC55ke47GDBRp1b6ZfzffXv87wo4udC4"
+				"bzz-raw://5a7d5b1ef5d8d5889ad2ed89d8619c09383b80b72ab226e0fe7bde1636481e34",
+				"dweb:/ipfs/QmebXWgtEfumQGBdVeM6c71McLixYXQP5Bk6kKXuoY4Bmr"
+			]
+		},
+		"chain-oracle/OOConsumerV2.sol": {
+			"keccak256": "0xb53f3cd299aaf63071b2edea3e19e42a2cf03e0aa69be31f60214d92d566e622",
+			"license": "AGPL-3.0-only",
+			"urls": [
+				"bzz-raw://19425f35da09b900d345b2f6690d5936308e6de8d277799216382eabd9596185",
+				"dweb:/ipfs/Qmb9ENf1iEmyYA96RQTxULbTqGfShNNjDDZ9GnHnyzD5AG"
+			]
+		},
+		"https://github.com/UMAprotocol/protocol/blob/7a93650a7494eaee83756382a18ecf11314499cf/packages/core/contracts/data-verification-mechanism/interfaces/FinderInterface.sol": {
+			"keccak256": "0x9166fbfe08e954eb86d33c114fcde7ce4fd0dda5d9d28b31210582bfc769fa86",
+			"license": "AGPL-3.0-only",
+			"urls": [
+				"bzz-raw://e611e12bcaaebfdf65b67c566ff1d34708e757f01a445bd87c55862e89383b81",
+				"dweb:/ipfs/QmYNSq5oopTShdS6j4VWKqoLxmQSRKmWebCxw6K4LfmKrf"
+			]
+		},
+		"https://github.com/UMAprotocol/protocol/blob/7a93650a7494eaee83756382a18ecf11314499cf/packages/core/contracts/optimistic-oracle-v2/interfaces/OptimisticOracleV2Interface.sol": {
+			"keccak256": "0xfd8657b45e330608fd1978812dfc1923ef157624d9f2d4b2c555f57f6234ea6f",
+			"license": "AGPL-3.0-only",
+			"urls": [
+				"bzz-raw://3e479707692c3f996b6bcbab944d95f3748383bbd4ce7cd614a7468415f539d9",
+				"dweb:/ipfs/QmZj63CBeMEaKaKSmw3D7F8B3kYEDBosaAGjH13hgE16VJ"
 			]
 		}
 	},

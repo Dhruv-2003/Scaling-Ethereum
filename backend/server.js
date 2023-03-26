@@ -1,16 +1,7 @@
-// const http = require("http");
-
-// const server = http.createServer((req, res) => {
-//   console.log("request has been made");
-//   console.log(provider);
-// });
+const OptimismOracleV2 = require("./functions/OptimismOracleV2");
 
 async function main() {
-  listner();
+  OptimismOracleV2();
 }
 
 main();
-
-// server.listen(3000, "localhost", () => {
-//   console.log("server is listening");
-// });
