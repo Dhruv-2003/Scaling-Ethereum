@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Abel&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -65,14 +67,19 @@ body {
 }
 
 body {
-  background: var(--primary-bg);
+  /* background: var(--primary-bg); */
+  /* background: #050529; */
+  background-color: white;
+  min-height: 100vh;
+  color: #121214;
+  font-family: 'Abel', sans-serif;
 }
 
 a {
   color: inherit;
   text-decoration: none;
 }
-
+/* 
 .writer {
   font-family: Courier, monospace;
   display: inline-block;
@@ -84,8 +91,6 @@ a {
   letter-spacing: 2px;
   animation: typing 5s steps(30, end), blink 0.75s step-end infinite;
   white-space: nowrap;
-  /* font-size: 30px; */
-  /* font-weight: 700; */
   border-right: 3px solid orange;
   box-sizing: border-box;
 
@@ -109,3 +114,15 @@ a {
     border-color: orange;
   }
 }
+
+.bg1 {
+  background-image: url('../src/assets/1.jpg');
+}
+
+.bg2 {
+  background-image: url('../src/assets/2.jpg');
+}
+
+.bg3 {
+  background-image: url('../src/assets/3.jpg');
+} */
