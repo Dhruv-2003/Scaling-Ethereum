@@ -52,7 +52,7 @@ export default function Home() {
           </a>
           <a
             className=" btn btn-accent rounded-sm normal-case"
-            href="https://datum.gitbook.io/datum/"
+            href="https://github.com/Dhruv-2003/Scaling-Ethereum"
             rel="noreferrer"
             target="_blank"
           >
@@ -115,21 +115,19 @@ export default function Home() {
           <div className="card-body">
             <h2 className="card-title">Multi Chain</h2>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus,
-              aut adipisci nulla repudiandae id ex! Delectus doloribus adipisci
-              laudantium praesentium! Architecto nihil, enim magnam a sunt at
-              ducimus voluptatem eius?
+              Deploy Contracts and Start an Oracle on your new EVM compatible
+              chains in just under 10 minutes with simple and easy to follow
+              steps. Specially configured for New Created OP stack Rollups
             </p>
           </div>
         </div>
         <div className="card w-96 col-span-3 md:col-span-1 border-l-4 border-accent md:m-0 m-3 rounded-none  bg-opacity-80 backdrop-blur-xl  ">
           <div className="card-body bg-red-5">
-            <h2 className="card-title">VRF Randomness</h2>
+            <h2 className="card-title">Optimistic Oracle</h2>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus,
-              aut adipisci nulla repudiandae id ex! Delectus doloribus adipisci
-              laudantium praesentium! Architecto nihil, enim magnam a sunt at
-              ducimus voluptatem eius?
+              An oracle for arbitrary off-chain data which leverages an
+              interactive escalation game between asserters and disputers and is
+              secured by economic incentives
             </p>
           </div>
         </div>
@@ -137,10 +135,8 @@ export default function Home() {
           <div className="card-body">
             <h2 className="card-title">Price Feeds</h2>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus,
-              aut adipisci nulla repudiandae id ex! Delectus doloribus adipisci
-              laudantium praesentium! Architecto nihil, enim magnam a sunt at
-              ducimus voluptatem eius?
+              Price feeds for different asset pair like BTC/ETH or ETH/USD can
+              be easily fetched on-chain with Chainlink for DEFI Applications
             </p>
           </div>
         </div>
