@@ -41,7 +41,7 @@ async function assertTruthEventListner() {
     OracleContract.on("assertTruth", (assertId, sender, claim, timestamp) => {
       console.log("event emitted, asserted truth values:");
       console.log(assertId, sender, claim, timestamp);
-      storingAssertion();
+      storingAssertion(assertId, assertedClaim, requester);
     });
   } catch (error) {
     console.log(error);
