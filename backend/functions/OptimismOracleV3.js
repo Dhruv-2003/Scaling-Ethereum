@@ -9,10 +9,8 @@ const {
   ConsumerContractAddress,
 } = require("../src/OptimismOracleV3/constants.js");
 
-const OracleProvider = new ethers.JsonRpcProvider(process.env.SEPOLIA_RPC_URL);
-const ConsumerProvider = new ethers.JsonRpcProvider(
-  process.env.POLYGON_RPC_URL
-);
+const OracleProvider = new ethers.JsonRpcProvider(process.env.DEST_RPC_URL);
+const ConsumerProvider = new ethers.JsonRpcProvider(process.env.ORIGIN_RPC_URL);
 
 const privatekey = process.env.BRIDGE_PRIVATE_KEY;
 
@@ -41,7 +39,7 @@ async function assertTruthEventListner() {
     OracleContract.on("assertTruth", (assertId, sender, claim, timestamp) => {
       console.log("event emitted, asserted truth values:");
       console.log(assertId, sender, claim, timestamp);
-      storingAssertion(assertId, assertedClaim, requester);
+      storingAssertion(assertId, claim, sender);
     });
   } catch (error) {
     console.log(error);
@@ -65,11 +63,14 @@ async function storingAssertion(assertId, assertedClaim, requester) {
 async function assertedEventListner() {
   try {
     console.log("listening to assert truth event");
-    ConsumerContract.on("truthAsserted", (assertId, assertionId) => {
-      console.log("event emitted, asserted truth values:");
-      console.log(assertId, assertionId);
-      setAssertionId(assertId, assertionId);
-    });
+    ConsumerContract.on(
+      "truthAsserted",
+      (assertId, assertionId, assertedClaim, timestamp) => {
+        console.log("event emitted, asserted truth values:");
+        console.log(assertId, assertionId, assertedClaim, timestamp);
+        setAssertionId(assertId, assertionId);
+      }
+    );
   } catch (error) {
     console.log(error);
   }
@@ -108,7 +109,7 @@ async function settleRequestListener() {
 async function settleRequest(assertId) {
   try {
     console.log("settling the request using consumer");
-    const tx = await ConsumerContractWithSigner.settleAndgetAssertionResult(
+    const tx = await ConsumerContractWithSigner.settleAndGetAssertionResult(
       assertId
     );
     await tx.wait();
@@ -121,6 +122,18 @@ async function settleRequest(assertId) {
 }
 
 //6
+async function gettingResult(assertId) {
+  try {
+    console.log("getting result");
+    const data = await ConsumerContract.getAssertion(assertId);
+    console.log(data);
+    storingResult(assertId, data);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+//7
 async function storingResult(assertId, assertResult) {
   try {
     console.log("setting assert result in oov3");
@@ -136,22 +149,10 @@ async function storingResult(assertId, assertResult) {
   }
 }
 
-//7
-async function gettingResult(assertId) {
-  try {
-    console.log("getting result");
-    const data = await ConsumerContract.getAssertion(assertId);
-    console.log(data);
-    storingResult(assertId, data);
-  } catch (error) {
-    console.log(error);
-  }
-}
-
 async function main() {
   assertTruthEventListner();
   assertedEventListner();
   settleRequestListener();
 }
 
-// main( )
+main();
