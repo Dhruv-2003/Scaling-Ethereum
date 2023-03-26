@@ -39,23 +39,24 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
         fee = _fee;
     }
 
+    event requestBuilt(string jobId, Chainlink.Request req);
+
     function buildRequest(
-        uint apiId,
         string memory jobId
-    ) public returns (Chainlink.Request memory req) {
+    ) public pure returns (Chainlink.Request memory req) {
         req = buildChainlinkRequest(
             jobId,
             address(this),
             this.fulfill.selector
         );
-        apiRequests[apiId] = APIRequest(req, 0, 0);
+        emit requestBuilt(jobId, req);
     }
 
     /**
      * Create a Chainlink request to retrieve API response, find the target
      * data, then multiply by 1000000000000000000 (to remove decimal places from data).
      */
-    function requestData(
+    function sendRequest(
         uint apiId,
         Chainlink.Request memory req
     ) public returns (bytes32 requestId) {

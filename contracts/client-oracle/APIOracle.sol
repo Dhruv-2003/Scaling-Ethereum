@@ -12,20 +12,39 @@ contract APIOracle is ChainlinkClient {
         uint result;
     }
 
+    mapping(string => Chainlink.Request) public reqBuilds;
+
     uint public totalRequests;
 
     mapping(uint => APIRequest) public apiRequests;
 
     event buildRequest(string jobId, uint timeStamp);
 
-    // By Client
-    function buildAPIrequest(string memory jobId) public {
+    function buildAPIRequest(
+        string memory jobId
+    ) public view returns (Chainlink.Request memory req) {
+        // require(reqBuilds);
+        req = reqBuilds(jobId);
+    }
+
+    // in Case there is no Current req build is there, called by Client
+    function requestBuildReq(string memory jobId) public {
         emit buildRequest(jobId, block.timestamp);
     }
 
     // By Oracle
-    function completeRequestBuild() public {}
+    function completeRequestBuild(
+        string memory jobId,
+        Chainlink.Request memory req
+    ) public {
+        reqBuilds[jobId] = req;
+    }
 
     // By Client
-    function requestData() public {}
+    function sendRequest(Chainlink.Request memory req) public {}
+
+    // By Oracle
+    function fulfillRequest() public {}
+
+    function getRequestData() public {}
 }
