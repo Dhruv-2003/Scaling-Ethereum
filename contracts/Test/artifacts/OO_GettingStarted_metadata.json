@@ -1,0 +1,107 @@
+{
+	"compiler": {
+		"version": "0.8.16+commit.07a7930e"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"name": "assertTruth",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "assertedClaim",
+				"outputs": [
+					{
+						"internalType": "bytes",
+						"name": "",
+						"type": "bytes"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "assertionId",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getAssertionResult",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "settleResult",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"Test/OOV3.sol": "OO_GettingStarted"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"Test/OOV3.sol": {
+			"keccak256": "0xc1b1ee4f6c0255a71344e3ddc473c1f89845bed86288877a2ed91fdb81ba0cae",
+			"license": "AGPL-3.0-only",
+			"urls": [
+				"bzz-raw://e8ae694effe1195fdc43d20839ea4ba6fbddb6f9a5b4205a70ccb482ea545691",
+				"dweb:/ipfs/QmQLmqhERA47HJPrMQVUB2Vmasix1zszwkupd6a35H7A5f"
+			]
+		},
+		"client-oracle/OptimisticOracleV3.sol": {
+			"keccak256": "0xa255bc6dd7b4fb4ae6767d06ebc7bee9852c1a5af5b8419885220c710e1e41f9",
+			"license": "AGPL-3.0-only",
+			"urls": [
+				"bzz-raw://25385135dceb9a74bbaf8e725bb68caa997faef0738ab32ca8907e8441fff1d9",
+				"dweb:/ipfs/QmWkvmorJU9ZT59VvBoLSQNTxgSUB7jf4xeSb4s8Gkxwg1"
+			]
+		}
+	},
+	"version": 1
+}

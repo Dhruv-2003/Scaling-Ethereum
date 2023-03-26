@@ -12,31 +12,31 @@ contract APIOracle is ChainlinkClient {
         uint result;
     }
 
-    mapping(string => Chainlink.Request) public reqBuilds;
+    mapping(bytes32 => Chainlink.Request) public reqBuilds;
 
     uint public totalRequests;
 
     mapping(uint => APIRequest) public apiRequests;
 
-    event buildRequest(string jobId, uint timeStamp);
+    event buildRequest(bytes32 jobId, uint timeStamp);
 
     event requestSent(Chainlink.Request req, uint apiId, uint timeStamp);
 
     function buildAPIRequest(
-        string memory jobId
+        bytes32 jobId
     ) public view returns (Chainlink.Request memory req) {
         // require(reqBuilds);
         req = reqBuilds[jobId];
     }
 
     // in Case there is no Current req build is there, called by Client
-    function requestBuildReq(string memory jobId) public {
+    function requestBuildReq(bytes32 jobId) public {
         emit buildRequest(jobId, block.timestamp);
     }
 
     // By Oracle
     function completeRequestBuild(
-        string memory jobId,
+        bytes32 jobId,
         Chainlink.Request memory req
     ) public {
         reqBuilds[jobId] = req;
@@ -55,7 +55,7 @@ contract APIOracle is ChainlinkClient {
     }
 
     // By Oracle
-    function setRequestData(uint apiId, bytes32 memory requestId) public {
+    function setRequestData(uint apiId, bytes32 requestId) public {
         apiRequests[apiId].requestId = requestId;
     }
 
