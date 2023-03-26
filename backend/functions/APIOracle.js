@@ -53,54 +53,99 @@ async function buildRequestApi(apiId,jobId){
         const request = await ConsumerContractWithSigner.buildRequest(apiId,jobId);
         await request.wait();
         console.log(request)
-        buildrequestoracle(jobId)
     } catch (error) {
         
     }
 }
 
-//remove if req.
-async function buildrequestoracle(jobId){
+async function RequestBuiltListener(){
     try {
-        console.log("build request by oracle");
-        const tx = await OracleContractWithSigner.buildAPIrequest(jobId)
-        await tx.wait();
-        console.log(tx)
-    } catch (error) {
-        console.log(tx)
-    }
-}
-
-//not defined yet
-async function requestDataListener(){
-    try {
-        console.log("listening for requested data");
-        OracleContract.on("requestData",() => {
-            console.log("event emitted");
-            requestData(apiId,req)
+        console.log("listening to request built event");
+        ConsumerContract.on("requestBuilt",(jobId,req) => {
+            console.log("event emitted")
+            console.log(jobId,req);
+            completeBuildRequest(jobId,req)
         })
     } catch (error) {
         console.log(error)
     }
 }
 
-async function requestData(apiId,req){
+async function completeBuildRequest(jobId,req){
     try {
-        const data = await ConsumerContractWithSigner.requestData(apiId,req)
-        await data.wait();
+        console.log("setting data in oracle")
+        const data = await OracleContractWithSigner.completeRequestBuild(jobId,req);
+        await data.wait()
         console.log(data)
     } catch (error) {
         console.log(error)
     }
 }
 
-//not defined yet
-async function fulfileventListener(){
+async function requestSentOracleListener(){
     try {
-        console.log("listening for fulfil event")
-        ConsumerContract.on("", () => {
+        console.log("Listening to request sent from oracle");
+        OracleContract.on("requestSent", (req,apiId,timeStamp) => {
             console.log("event emitted")
+            console.log(req,apiId,timeStamp);
+            sendRequest(apiId,req)
         })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function sendRequest(apiId,req){
+    try {
+        const request = await ConsumerContractWithSigner.sendRequest(apiId,req);
+        await request.wait();
+        console.log(request)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function requestSentConsumerListener(){
+    try {
+        console.log("Listening to request sent from consumer");
+        ConsumerContract.on("requestSent", (requestId,apiId,) => {
+            console.log("event emitted")
+            console.log(requestId,apiId);
+            setRequestData(apiId,requestId)
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function setRequestData(apiId,requestId){
+    try {
+        const request = await OracleContractWithSigner.setRequestData(apiId,requestId);
+        await request.wait();
+        console.log(request)
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function requestFulfilledListener(){
+    try {
+        console.log("Listening to request fulfil from consumer");
+        ConsumerContract.on("requestFulfilled", (result) => {
+            console.log("event emitted")
+            console.log(result);
+            fulfillRequest(apiId,result)
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+async function fulfillRequest(apiId,result){
+    try {
+        const request = await OracleContractWithSigner.setRequestData(apiId,result);
+        await request.wait();
+        console.log(request)
     } catch (error) {
         console.log(error)
     }
@@ -108,9 +153,10 @@ async function fulfileventListener(){
 
 
 
-
 async function main(){
     buildRequestListener();
-    requestDataListener();
-    fulfileventListener();
+    RequestBuiltListener();
+    requestSentOracleListener();
+    requestSentConsumerListener();
+    requestFulfilledListener();
 }
