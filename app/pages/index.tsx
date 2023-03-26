@@ -88,7 +88,7 @@ export default function Home() {
 
       <div className=" px-5 z-10 my-5 w-full flex justify-around items-start md:flex-row flex-col mt-20">
         <div className=" hidden md:block">
-          <YouTube videoId="VUyWEQKURok" opts={opts} onReady={onPlayerReady} />
+          <YouTube videoId="mJmd6lutyig" opts={opts} onReady={onPlayerReady} />
         </div>
         <div className=" max-w-md px-5 mb-5 md:mb-0">
           <p className="text-lg leading-8 tracking-wider text-justify">
@@ -106,7 +106,7 @@ export default function Home() {
           </a>
         </div>
         <div className=" md:hidden flex justify-center">
-          <YouTube videoId="VUyWEQKURok" opts={opts2} onReady={onPlayerReady} />
+          <YouTube videoId="mJmd6lutyig" opts={opts2} onReady={onPlayerReady} />
         </div>
       </div>
 

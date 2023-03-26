@@ -145,4 +145,4 @@ async function VRFOracleV2() {
   requestFulfilListener();
 }
 
-VRFOracleV2();
+module.exports = VRFOracleV2;

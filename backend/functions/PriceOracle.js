@@ -84,4 +84,4 @@ async function PriceOracle() {
   RequestPriceEventListener();
 }
 
-PriceOracle();
+module.exports = PriceOracle;
