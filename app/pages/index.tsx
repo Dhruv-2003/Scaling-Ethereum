@@ -33,6 +33,10 @@ export default function Home() {
 
   return (
     <>
+      <Head>
+        <title>Datum</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <nav className=" z-40 flex justify-between items-center px-6 bg-[#121214]text-white py-2 bg-opacity-90 fixedbackdrop-blur w-full top-0">
         <div className=" flex justify-start items-center cursor-pointer">
           <h1 className=" text-4xl font-bold tracking-wider">DATUM</h1>
