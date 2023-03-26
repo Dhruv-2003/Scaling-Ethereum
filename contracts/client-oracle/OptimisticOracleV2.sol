@@ -13,7 +13,7 @@ contract OptimisticOracleV2 {
 
     // Store the Req data
     struct ooRequest {
-        bytes identifier;
+        bytes32 identifier;
         bytes ancillaryData;
         address bondCurrencyAddress;
         uint256 reward;
@@ -28,7 +28,7 @@ contract OptimisticOracleV2 {
 
     event requestCreated(
         uint256 requestId,
-        bytes identifier,
+        bytes32 identifier,
         bytes ancillaryData,
         uint256 requestTime,
         address requester
@@ -40,7 +40,7 @@ contract OptimisticOracleV2 {
 
     // We can hardCode bond , reward & time to avoide complications
     function requestData(
-        bytes memory identifier,
+        bytes32 identifier,
         bytes memory ancillaryData,
         address bondCurrencyAddress,
         uint256 rewardAmount,
@@ -81,4 +81,14 @@ contract OptimisticOracleV2 {
         _request.currentStatus = Status.Settled;
         emit resultAdded(requestId, result, block.timestamp);
     }
+
+    function getRequestResult(uint requestId) public view returns(int) {
+        return ooRequests[requestId].result;
+    }
+
+    function getRequest(uint requestId) public view returns(ooRequest memory) {
+        return ooRequests[requestId];
+    }
+    
+
 }

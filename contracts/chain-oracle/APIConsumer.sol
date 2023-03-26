@@ -40,15 +40,15 @@ contract APIConsumer is ChainlinkClient, ConfirmedOwner {
         fee = _fee;
     }
 
-    event requestBuilt(string jobId, Chainlink.Request req);
+    event requestBuilt(bytes32 jobId, Chainlink.Request req);
 
     event requestSent(bytes32 requestId, uint apiId);
 
     event requestFulfilled(uint apiId, uint result);
 
     function buildRequest(
-        string memory jobId
-    ) public pure returns (Chainlink.Request memory req) {
+        bytes32 jobId
+    ) public returns (Chainlink.Request memory req) {
         req = buildChainlinkRequest(
             jobId,
             address(this),
