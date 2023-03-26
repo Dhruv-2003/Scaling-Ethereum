@@ -151,8 +151,6 @@ async function fulfillRequest(apiId,result){
     }
 }
 
-
-
 async function main(){
     buildRequestListener();
     RequestBuiltListener();
