@@ -71,8 +71,8 @@ export default function Home() {
               <Image src={img1} alt="img" />
             </div>
             <p className="py-4 text-lg leading-8 tracking-wider">
-              A a cross-chain permissionless oracle protocol for your smart
-              contracts built on top of Optimism&#39;s newly created OP stack
+              A cross-chain permissionless oracle protocol for your smart
+              contracts built on top of Optimism&#39;s newly created OP stack chains.
             </p>
             <a
               className="btn btn-accent rounded-sm"
@@ -88,7 +88,7 @@ export default function Home() {
 
       <div className=" px-5 z-10 my-5 w-full flex justify-around items-start md:flex-row flex-col mt-20">
         <div className=" hidden md:block">
-          <YouTube videoId="mJmd6lutyig" opts={opts} onReady={onPlayerReady} />
+          <YouTube videoId="uTJiElet0VM" opts={opts} onReady={onPlayerReady} />
         </div>
         <div className=" max-w-md px-5 mb-5 md:mb-0">
           <p className="text-lg leading-8 tracking-wider text-justify">
@@ -106,7 +106,7 @@ export default function Home() {
           </a>
         </div>
         <div className=" md:hidden flex justify-center">
-          <YouTube videoId="mJmd6lutyig" opts={opts2} onReady={onPlayerReady} />
+          <YouTube videoId="uTJiElet0VM" opts={opts2} onReady={onPlayerReady} />
         </div>
       </div>
 
